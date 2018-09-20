@@ -1,7 +1,7 @@
-# *`This`* 
+# *`this`* 
 This is a special keyword that each function get to identify the scope it's belong to. 
 
-*NOTE* in JS we have a built in method called `call` which allows you to use one function on a diff object props as this example:
+*NOTE* in JS we have a method called `call` which allows you to bind context and reuse code on different objects:
 ```js
 
 // <contex> is the obj name the prop belong to
@@ -21,7 +21,7 @@ identify.call(me)  // Arty
 identify.call(you) // Yosef
 ```
 
-Instead of that , we can simply pss the obj name the prop belong to as the "context" and avoid using `call`
+Instead of that , we can simply pass the object as a prop and not to use `call` at all and then we dont need any context to an object - we have the actual object.
 
 ```js
 function identify(context) {
