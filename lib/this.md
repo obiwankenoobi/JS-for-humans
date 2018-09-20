@@ -258,12 +258,13 @@ That's it. That's all it takes to understand the rules of this binding for norma
 
 ### Lexical `this`
 
-As we learned in the previews book - in ES6 we have this new `() =>` which use `this` with totally diff aproach. What it does is **adopting** the `this` from the outter scope on its run time automatically. Which means - without any need of binding the function - the arrow function will check for the scope at it's run time - and use the `this` from it. 
+As we learned in the previews book - in ES6 we have this new arrow function `() =>` which use `this` with totally diff aproach. What it does is **adopting** the `this` from the outter scope on its run time automatically and doesnt have it's own `this` as we know from regular functions. Which means - without any need of binding the function - the arrow function will check for the scope at it's run time - and use the `this` from it. 
 
 ```js
 function foo() {
 	setTimeout(() => {
 		// `this` here is lexically adopted from `foo()`
+		// as arrow functions doesn't have their own `this` context
 		console.log( this.a );
 	},100);
 }
@@ -279,7 +280,10 @@ Before ES6 we had another way to achive this pattern:
 ```js
 function foo() {
 	var self = this;
-	setTimeout( function(){
+
+	// without using `self` the next block will have ITS own `this` context and 
+	// wont have the right access to `a`
+	setTimeout( function() {
 		console.log( self.a );
 	}, 100 );
 }
@@ -290,6 +294,7 @@ var obj = {
 
 foo.call( obj ); // 2
 ``` 
+
 What we do is to assign `this` (whatever it will be) inside `foo` to a variable so later use it inside `setTimeout` so we wont lose its context by passing it as param. If we simply used `this` inside `setTimeout` we were getting NOT the `this` we want but the `this` of `setTimeout`.
 
 Later we bind `this` using `call` to the object `obj` so when we use `self` inside `foo` the contex will be of `obj` and `a` will be `2`
@@ -298,32 +303,33 @@ Leter when invoking the function we simply do what we learned we need to do - bi
 
 <br/>
 
-## notes about `this`
+## notes
 
-When you declare a function inside a function it has the `global` object context even though you might think it should have the context of the function that it has being declared on. 
+When you declare a `function` inside a `function` it has the `this` context of it's execution context (the `this` from the time you called the function (usually the `global` objet))! Even though you might think it should have the context of the function that it has being declared on. 
 
-that's because **only** methods inhert the execution context of `this` and even though the function has being declared inside another function , it's still a function and **not** a method - therefor it inhert the `global` object context as any function
+that's because **only** methods inhert the lexical context of `this` and even though the function has being declared inside another function , it's still a function and **not** a method - therefor it inhert the execution context as any function. (usually the `global` objet)
 
-important to note - even that fucntions that has being declared inside another function have the `this` context of the `global` object , it doesn't mean it can be called from the `global` object - thats because of the Lexical scope and the fact it's not has being declared there.
+important to note - even that fucntions that has being declared inside another function have the `this` context of the execution context , it doesn't mean it can be called from the out of its scope - thats because of the Lexical scope and the fact it's not has being declared there.
 
 
 #### example 
 ```js
 function first() {
-  console.log(this) // global object
-  function second() { // <== simple function
-    console.log(this) 
+  let a = true;
+  function second() { // <== regular function
+    console.log(this.a); // <== <this> pointing to the global scope (this.a == undefined) 
   }
-  second() // <global> object
+  second();
 }
-
 
 let obj = {
-  consoleContext: function() { // <= method
-    console.log(this) // <obj> object
+  a: true,
+  consoleContext: function() { // <== a method
+
+    console.log(this.a); // <== <this> pointing to <obj> scope (thia.a == true)
   }
-}
-
-
-second() // ref error
+};
 ```
+
+#### Real life example 
+lets say you have 
