@@ -2,7 +2,7 @@
 
 I created this repo for education propeses and you all are welcome to contribute and add useful information about JS - so we all could become better devs! 
 
-For now this repo contains only few sections but Im planning to add new ones every week. 
+For now this repo contains only few sections but Im planning to add new ones every week. The information written in an easy to understand language with simple examples to demonstrate concepts.  
 
 If you noticed I did some mistakes or explained something incorrectly - please make a PR so everyone can enjoy accurate information! :smile: 
 
