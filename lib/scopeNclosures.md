@@ -1,297 +1,413 @@
-# *This* & Object Prototypes
-This is a special keyword that each function get to identify the scope it's belong to. 
+# Scope & closures
+the scope is basically the "enviorment" the declared variables are live - and where they can be accessed from 
+### example
 
-*NOTE* in JS we have a built in method called `call` which allows you to use one function on a diff object props as this example:
-```js
-
-// <contex> is the obj name the prop belong to
-function identify() {
-  return this.name
-}
-
-let me = {
-  name: "Arty"
-}
-
-let you = {
-  name: "Yosef"
-}
-
-identify.call(me)  // Arty
-identify.call(you) // Yosef
-```
-
-Instead of that , we can simply pss the obj name the prop belong to as the "context" and avoid using `call`
-
-```js
-function identify(context) {
-	return context.name.toUpperCase();
-}
-
-function speak(context) {
-	var greeting = "Hello, I'm " + identify( context );
-	console.log( greeting );
-}
-
-identify( you ); // YOSEF
-speak( me ); // Hello, I'm ARTY
-```
-
-So why we need call?
-```js
-function foo(num) {
-	console.log( "foo: " + num );
-
-	this.count++;
-}
-
-foo.count = 0;
-
-var i;
-
-for (i=0; i<10; i++) {
-	if (i > 5) {
-		foo( i );
-	}
-}
-// foo: 6
-// foo: 7
-// foo: 8
-// foo: 9
-
-// how many times was `foo` called?
-console.log( foo.count ); // 0 -- WTF?
-```
-in the example above you can see us trying to count the number of times the function has being called. the problem is - when we call `this.count++` we DONT actually reffer to `foo` when we use `this` but instead we creating new global variable out of `foo`.  
-
-To solve this problem we can use `call` when invoking the function to properlly bind the `this`  ref to the correct object or function 
-```js
-for (i=0; i<10; i++) {
-	if (i > 5) {
-		foo.call( foo, i );
-	}
-}
-```
-First arg in `call` is the object we want to reffer to. The other args are the parameters to pass to the function.
-
-### [what `this` is not](https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch1.md#its-scope) ?
-
-> Its Scope
-The next most common misconception about the meaning of this is that it somehow refers to the function's scope. It's a tricky question, because in one sense there is some truth, but in the other sense, it's quite misguided.
-To be clear, this does not, in any way, refer to a function's lexical scope. It is true that internally, scope is kind of like an object with properties for each of the available identifiers. But the scope "object" is not accessible to JavaScript code. It's an inner part of the Engine's implementation.
-
-### what `this` is ?
->Having set aside various incorrect assumptions, let us now turn our attention to how the this mechanism really works.
-We said earlier that this is not an author-time binding but a runtime binding. It is contextual based on the conditions of the function's invocation. this binding has nothing to do with where a function is declared, but has instead everything to do with the manner in which the function is called.
-When a function is invoked, an activation record, otherwise known as an execution context, is created. This record contains information about where the function was called from (the call-stack), how the function was invoked, what parameters were passed, etc. One of the properties of this record is the this reference which will be used for the duration of that function's execution.
-In the next chapter, we will learn to find a function's call-site to determine how its execution will bind this.
-
-#### simple words: 
-`this` reffer to the place where the function is getting called and not where it has being declared! (as the scope suggest)
-
-
-#### Default Binding
-```js
+```js 
 function foo() {
-	console.log( this.a );
+  let val = 10;
+  console.log(val) // 10 
 }
-
-var a = 2;
-
-foo(); // 2
+console.log(val) // RefError
 ```
-Above we declared `a` in the globl scope, and called `foo` in the global scope - therefore the global scope is the `this` inside `foo` and will print `2`.
+in this example we prove the variable `val` is onlt exist inside the scope of `foo` and can't be accessed in the outer scope - in this example is the `global` scope.
 
+The compiler will "bubble" through the scopes up to the `global` scope to search for the variable that has been called and if it doesnt find it - it return `RefError` 
 
-#### Implicit Binding
-```js
-function foo() {
-	console.log( this.a );
+# `let`
+
+let is a new way to declare variables, what special about it is the fact `let` will only exist inside the **BLOCK** it has been declared on and **NOT** in the whole scope.
+
+### example
+```js 
+function foo(val) {
+  var secret = "secret";
+  if (val) {
+    secret = "not a secret";
+    console.log(secret); // not a secret
+  }
+  console.log(secret); // // not a secret
 }
 
-var obj = {
-	a: 2,
-	foo: foo
-};
-
-obj.foo(); // 2
 ```
-Whatever you choose to call this pattern, at the point that `foo()` is called, it's preceded by an object reference to `obj`. When there is a context object for a function reference, the implicit binding rule says that it's that object which should be used for the function call's this binding.
-</br>
-#### Implicitly Lost
-One of the most common frustrations that this binding creates is when an implicitly bound function loses that binding, which usually means it falls back to the default binding, of either the `global` object or `undefined`, depending on strict mode.
+here we use the old `var` keyword and as you can see it can be access in the whole **BLOCK** it has been declared on. We proved it when assigning a new value to `secret` inside of `if` even though its not the same BLOCK - and yet the new value accessable through the whole BLOCK. 
 
-```js
-function foo() {
-	console.log( this.a );
+```js 
+function fee(val) {
+  let secret = "secret";
+  if (val) {
+    let secret = "not a secret";
+    console.log(secret); // not a secret
+  }
+  console.log(secret); // secret
 }
 
-function doFoo(fn) {
-	// `fn` is just another reference to `foo`
-
-	fn(); // <-- call-site!
-}
-
-var obj = {
-	a: 2,
-	foo: foo
-};
-
-var a = "oops, global"; // `a` also property on global object
-
-doFoo( obj.foo ); // "oops, global"
 ```
-Parameter passing is just an implicit assignment, and since we're passing a function, it's an implicit reference assignment, so the end result is the same as the previous snippet.
+here as we can see each of the `secret` variable has it's own value through the BLOCK it has been declared on - one inside the `foo` BLOCK , while the other have the `if` BLOCK and their are exist only there.
 
-What if the function you're passing your callback to is not your own, but built-in to the language? No difference, same outcome.
+### the problems `let` fixing
 
-#### Explicit Binding
-To use explicit binding we can use two methods provided to us by JS `call` and `apply` they are both takes as first arg the object/context you want to use as `this` and by doing so you can maka a proper function call with the binded `this` of your choice.
-```js
-function foo() {
-	console.log( this.a );
-}
-
-var obj = {
-	a: 2
-};
-
-foo.call( obj ); // 2
-```
-
-
-#### Hard Binding
-As alternative - you can bind the context for a particular function **BEFORE** you call it by using `bind`. 
-
-`bind` is another method you have in all functions in JS and it works similar to `apply` and `call` but also fix all bind lost issues by **hard binding** `this` before invoking the functions call 
+for one example - `let` fix the weird behavior of JS as the example belove suggest:
 
 ```js
-function foo() {
-	console.log( this.a );
-}
-
-var obj = {
-	a: 2
-};
-
-let fooBindedToObj = foo.bind(obj)
-
-fooBindedToObj(); // 2
+a = 2;
+var a;
+console.log( a );
 ```
-As you can see in the example above - we declare new variable `fooBindedToObj` ans set it with the value of `foo.bind(obj)` which mean , `foo` with the context of `obj` as `this`
 
-> `bind(..)` returns a new function that is hard-coded to call the original function with the `this` context set as you specified.
+whatwould print? one might think it will print `undefined` because the declaration of `a` comes after `a = 2` so you might think `a` is not equel `2` but in fact the compiler have its own rules as you learn in next chapter and it actually read this code like this:
 
-###### API Call "Contexts"
-Many libraries' functions, and indeed many new built-in functions in the JavaScript language and host environment, provide an optional parameter, usually called "context", which is designed as a work-around for you not having to use `bind(..)` to ensure your callback function uses a particular `this`.
 ```js
-function foo(el) {
-	console.log( el, this.id );
-}
-
-var obj = {
-	id: "awesome"
-};
-
-// use `obj` as `this` for `foo(..)` calls
-[1, 2, 3].forEach( foo, obj ); // 1 awesome  2 awesome  3 awesome
+var a;
+a = 2;
+console.log( a );
 ```
-as the example aboce suggest , we pass second param to `foreach` with the context we want to bind the function to. We use it instead of using `bind`.
+so it will print `2` it happens because the compiler first declare all variables in the code (no matter if they come after expressions) and only then it will assign values and execute all function calls
+
+so how `let` fix this confusing concept?
+
+simply - declarations made with `let` will not hoist to the entire scope of the block they appear in. Such declarations will not observably "exist" in the block until the declaration statement. 
+
+means:
+```js
+a = 2;
+let a;
+console.log( a ); // a is not defined
+```
+why? because we trying to access `a` BEFORE it getting declared and because `let` isn't being hoist - it's simply doesnt exist.
+
+## Hoisting
+
+first we need to declare one important role - in JS , the compiler first DECLARE all the variables and functions that need to be DECLARED and only then it will assign values and execute them. 
+### example 
+```js
+a = 2;
+var a;
+console.log( a );
+``` 
+We took the example from before to demonstrate. Here even though it seems like we assign `a = 2` first, the compiler actually read the `var a` part first  because its a declaration and `a = 2` is assignment.
+
+Lets take another example: 
+
+```js
+console.log(a)
+var a = 10;
+```
+the compiler actually brake down this statment to what he know best - declarations apart , assignments apart. And it will read it like so:
+
+```js
+var a;
+console.log(a);
+a = 10;
+```
+the assignment `a = 10;`, is **left** in place for the execution phase while the declaration `var a;` hoised to the top. 
+
 <br/>
 
-#### `new` Binding
-when creating new function constructors with the special keyword `new` you get the properties inside it auto binded to the new constructor that has been created. 
+**Function declarations are hoisted, But function expressions are not.**
+
 ```js
-function foo(a) {
-	this.a = a;
+foo(); // not ReferenceError, but TypeError!
+
+var foo = function bar() {
+	// ...
+};
+```
+The variable identifier foo is hoisted and attached to the enclosing scope (global) of this program, so foo() doesn't fail as a ReferenceError. But foo has no value yet (as it would if it had been a true function declaration instead of expression). So, foo() is attempting to invoke the undefined value, which is a TypeError illegal operation.
+
+### functions first
+```js
+foo(); // 1
+
+var foo;
+
+function foo() {
+	console.log( 1 );
 }
 
-var bar = new foo( 2 );
-console.log( bar.a ); // 2
+foo = function() {
+	console.log( 2 );
+};
 ```
-### Everything In Order
-so now when we know about the 4 method we can bind `this` , which one is the strongest? 
+`1` is printed instead of `2`! This snippet is interpreted by the Engine as:
 ```js
 function foo() {
-	console.log( this.a );
+	console.log( 1 );
 }
 
-var obj1 = {
-	a: 2,
-	foo: foo
+foo(); // 1
+
+foo = function() {
+	console.log( 2 );
 };
-
-var obj2 = {
-	a: 3,
-	foo: foo
-};
-
-obj1.foo(); // 2
-obj2.foo(); // 3
-
-obj1.foo.call( obj2 ); // 3
-obj2.foo.call( obj1 ); // 2
 ```
-In the example above we can see that the explicit binding method using `call` is stronger then the implicit binding using the object name infront of the method. 
+
+it happens because as the title suggests `function` comes before variables. Therefor it will print `1` because `foo()` comes before `foo = function() {...}` so it never called with the new function that has being **assigned** to is
+
+## Scope Closure
+> Closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.
+
+```js
+function foo() {
+	var a = 2;
+
+	function bar() {
+		console.log( a );
+	}
+
+	return bar;
+}
+
+var baz = foo();
+
+baz(); // 2
+```
+### whats going on? 
+What we do in this snippets is declaring a function `foo` with inner function `bar` that as we learned has access through lexical scope - to all of the `foo` inner scope. 
+
+
+Then we taking the ref to `bar` and `return` the `bar` function object
+
+
+Leter we ofcourse invoking `foo` and assigning the value returned from it to `baz` and the value is? correct the function - `bar`. 
+
+
+At the end we invoke `baz` (while it's value is the func `bar`) and it's print `2`.
 <br/>
 
-### Determining `this`
-Now, we can summarize the rules for determining `this` from a function call's call-site, in their order of precedence. Ask these questions in this order, and stop when the first rule applies.
+**One might ask** - How do we have access to `var a = 2;` which couse it to print `2` if we invoked it **out** of its declared scope? well - this is the magic of ***clousers*** . 
 
-Is the function called with `new` (**new binding**)? If so, `this` is the newly constructed object.
+> `bar()` still has a reference to that scope, and that reference is called closure.
 
-`var bar = new foo()`
 
-Is the function called with `call` or `apply` (**explicit binding**), even hidden inside a `bind` hard binding? If so, `this` is the explicitly specified object.
+### more example
+```js
+var fn;
 
-`var bar = foo.call( obj2 )`
+function foo() {
+	var a = 2;
 
-Is the function called with a context (**implicit binding**), otherwise known as an owning or containing object? If so, `this` is that context object.
+	function baz() {
+		console.log( a );
+	}
+    // assign `baz` to <fn> (out of scope)
+	fn = baz; 
+}
 
-`var bar = obj1.foo()`
+function bar() {
+	fn(); // look ma, I saw closure!
+}
 
-Otherwise, default the `this` (**default binding**). If in strict mode, pick `undefined`, otherwise pick the `global` object.
+foo();
 
-`var bar = foo()`
+bar(); // 2
+```
 
-That's it. That's all it takes to understand the rules of this binding for normal function calls. 
+### whats going on
+In the example above what we do is declaring var `fn` in the global scope
+
+Then we declaring function `foo` with inner function `baz` that as we learned has an access to outer values through laxical scope.
+
+Later we assign the `baz` func to the global var `fn` so now we have ref to `baz` out of the author declared scope! 
+
+at The end we daclare `bar` which invoke `fn` which by the time `foo` will be invoked - it's value will be the ref to `baz` means - when we invoke `bar` thanks to ***clouser*** we can access to the scope of `foo` and succesfully access the value of `a`
+
+## clousers in loops
+```js
+for (var i=1; i<=5; i++) {
+	setTimeout( function timer(){
+		console.log( i );
+	}, i*1000 );
+}
+```
+
+If we take this code above - one might think the result will be `1..2..3..4..5` but not.
+
+What actually happens is for each loop new function is being declared and invoked but the access to `i` is thorugh the global scope and has the value `6` by the time it invoked. means what actually being print is `6..6..6..6..6` as the value `i` of the global scope - by the time its invoked suggest. 
+
+**We can fix it using `let`**
+
+As you recall - `let` variable is **only** accessable to its own scope - which means that on each irritation of the loop , it creates **new** `i` and you will have access to it thought **clouser** with its **new value**
+
+```js
+for (let i=1; i<=5; i++) {
+	setTimeout( function timer(){
+		console.log( i );
+	}, i*1000 );
+}
+```
+> There's a special behavior defined for let declarations used in the head of a for-loop. This behavior says that the variable will be declared not just once for the loop, but each iteration. And, it will, helpfully, be initialized at each subsequent iteration with the value from the end of the previous iteration.
+
+
+## Closurs in Modules
+consider this snippets: 
+```js
+function CoolModule() {
+	var something = "cool";
+	var another = [1, 2, 3];
+
+	function doSomething() {
+		console.log( something );
+	}
+
+	function doAnother() {
+		console.log( another.join("!"));
+	}
+
+	return {
+		doSomething: doSomething,
+		doAnother: doAnother
+	};
+}
+
+var foo = CoolModule();
+
+foo.doSomething(); // cool
+foo.doAnother(); // 1 ! 2 ! 3
+```
+### This pattern we see above called *module* 
+
+lets brake it down: 
+The first thing we doing is declaring `CoolModule` which is a function in the global scope. Inside it we declare a couple of variables and another couple of function. (all have access to the `CoolModule` scope of course) the interesting part is right below the declaration - 
+the `return` statement in the bottom of the function that returning an object with both functions that has being declared, stored inside the object props. 
+
+So what now? 
+Now you can use pattern called *module reveal* which basically mean you call the module and store it's value inside another variable as you can see here `var foo = CoolModule();`. Now `foo` has the ref to the object that has being returned from `CoolModule` therefore , it has the refs to both functions AND these functions has access to the **scope** of `CoolModule`!  
+
+*NOTE:*
+We dont return the variables inside the object like so:
+```js
+return {
+    doSomething: doSomething,
+    doAnother: doAnother,
+    something:something,
+    another:another
+};
+```
+what does it mean? 
+It means we **cant** access these variables outside of the scope of `CoolModule` - **only** the functions that has being returned can access and use these values because they share the same scope even if they get invoked outside of author contex (thanks to *closur*). 
+**These variables are invisible to the rest of the app!**
+
+The example above can create as many instance of the module as you like - if you preffer to have only one main instance of the model (this pattern can be called *singleton*) you can do this:
+
+```js
+var foo = (function CoolModule() {
+	var something = "cool";
+	var another = [1, 2, 3];
+
+	function doSomething() {
+		console.log( something );
+	}
+
+	function doAnother() {
+		console.log( another.join( " ! " ) );
+	}
+
+	return {
+		doSomething: doSomething,
+		doAnother: doAnother
+	};
+})();
+
+foo.doSomething(); // cool
+foo.doAnother(); // 1 ! 2 ! 3
+```
+This example very similar to the first one only here we dont need to invoke `CoolModule` and assign it to a variable - we use *IIFE* to do so as the declaration of the module. It means at the time you declare the module - you assign it to a variable and can use it right aeway.
+
+
+Another powerfull patter you can use is to name the object you return so you can modify it's method directly through it's API
+```js
+var foo = (function CoolModule(id) {
+	function change() {
+		// modifying the public API
+		publicAPI.identify = identify2;
+	}
+
+	function identify1() {
+		console.log( id );
+	}
+
+	function identify2() {
+		console.log( id.toUpperCase() );
+	}
+
+	var publicAPI = {
+		change: change,
+		identify: identify1
+	};
+
+	return publicAPI;
+})( "foo module" );
+
+foo.identify(); // foo module
+foo.change();
+foo.identify(); // FOO MODULE
+```
+As you can see we return `publicAPI` which is an named object what hold the functions we returning as the module API. Now consider this snippets:
+```js
+    function change() {
+        // modifying the public API
+        publicAPI.identify = identify2;
+    }
+```
+When you call `foo.change();` what it does is - changing the value of the `publicAPI.identify` and assign to it new value `identify2`. Now when you call `foo.identify();` its values will be the function `identify2` and not `identify1`.
+
+<br/>
 
 ### Lexical `this`
 
-As we learned in the previews book - in ES6 we have this new `() =>` which use `this` with totally diff aproach. What it does is **adopting** the `this` from the outter scope on its run time automatically. Which means - without any need of binding the function - the arrow function will check for the scope at it's run time - and use the `this` from it. 
-
+consider the next snippets:
 ```js
-function foo() {
-	setTimeout(() => {
-		// `this` here is lexically adopted from `foo()`
-		console.log( this.a );
-	},100);
-}
-
 var obj = {
-	a: 2
+	id: "awesome",
+	cool: function coolFn() {
+		console.log( this.id );
+	}
 };
 
-foo.call( obj ); // 2
+var id = "not awesome";
+
+obj.cool(); //awesome
+
+setTimeout( obj.cool, 100 ); //not awesome
+```
+As you can see - by calling `obj.cool` inside `setTimeout` it lost it's `this` binding and instead of getting the scope of `obj` it getting the `global` scope which has diff value for `id`.
+
+We have couple of solutions ti this problem. 
+
+#### first `() =>` 
+the arrow function is a new syntax of functions declaration presented to us with ES6. It has couple of features and one of them is the special treatment to `this` 
+```js
+var obj = {
+	count: 0,
+	cool: function coolFn() {
+		if (this.count < 1) {
+			setTimeout( () => {
+				this.count++;
+				console.log( "awesome?" );
+			}, 100 );
+		}
+	}
+};
+
+obj.cool(); // awesome?
+```
+In the snippets above you can see we use the errow function inside `setState` - before that we have seen the regular `function` keyword is cousing the `this` contex to be lost - but here the contex is correct because of `() =>` that use *lexical this* to help us with thats issue. Basically what it does is taking the `this` contex of their immediate lexical enclosing scope which in this example is `cool` therfor it has the same `this` as to the rest of variables in it's scope.
+
+This approach has couple of minuses such as - arrow function is annonymouse and at times you will have to use named functions and it can couse a problem. Another way to handle this issue is to use `bind` and propperlly assign the right `this` context to the code
+```js
+var obj = {
+	count: 0,
+	cool: function coolFn() {
+		if (this.count < 1) {
+			setTimeout( function timer(){
+				this.count++; 
+				console.log( "more awesome" );
+			}.bind( this ), 100 );
+		}
+	}
+};
+
+obj.cool(); // more awesome
 ```
 
-Before ES6 we had another way to achive this pattern:
-```js
-function foo() {
-	var self = this;
-	setTimeout( function(){
-		console.log( self.a );
-	}, 100 );
-}
-
-var obj = {
-	a: 2
-};
-
-foo.call( obj ); // 2
-``` 
-What we do is to assign `this` (whatever it will be) inside `foo` to a variable so later use it inside `setTimeout` so we wont lose its context by passing it as param. If we simply used `this` inside `setTimeout` we were getting NOT the `this` we want but the `this` of `setTimeout`.
-
-Later we bind `this` using `call` to the object `obj` so when we use `self` inside `foo` the contex will be of `obj` and `a` will be `2`
-
-Leter when invoking the function we simply do what we learned we need to do - bind the function with the context we need in this case `obj` what gives us the `this` context of `obj` inside a variable `self` which we later need to use inside `setTimeout`
+here we simply use `bind` to have a contex to the `cool` scope therefore it works as expected.
