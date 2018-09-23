@@ -1,7 +1,7 @@
 # *`this`* 
-This is a special keyword that each function get to identify the scope it's belong to. 
+This is a special keyword that each function gets to identify the scope it belongs to. 
 
-*NOTE* in JS we have a method called `call` which allows you to bind context and reuse code on different objects:
+*NOTE* in JS we have a method `call` which allows you to bind context and reuse code on different objects:
 ```js
 
 // <contex> is the obj name the prop belong to
@@ -21,7 +21,7 @@ identify.call(me)  // Arty
 identify.call(you) // Yosef
 ```
 
-Instead of that , we can simply pass the object as a prop and not to use `call` at all and then we dont need any context to an object - we have the actual object.
+Instead of using `call`, we can simply pass the object as a prop and no longer require any context to an object because we have the object itself.
 
 ```js
 function identify(context) {
@@ -37,7 +37,7 @@ identify( you ); // YOSEF
 speak( me ); // Hello, I'm ARTY
 ```
 
-So why we need call?
+So why do we need call?
 ```js
 function foo(num) {
 	console.log( "foo: " + num );
@@ -62,9 +62,9 @@ for (i=0; i<10; i++) {
 // how many times was `foo` called?
 console.log( foo.count ); // 0 -- WTF?
 ```
-in the example above you can see us trying to count the number of times the function has being called. the problem is - when we call `this.count++` we DONT actually reffer to `foo` when we use `this` but instead we creating new global variable out of `foo`.  
+In the example above you can see we are trying to count the number of times the function has being called. The problem is when we call `this.count++`, we DON'T actually refer to our function `foo` when we use `this`, but instead we are creating a new global variable `foo`.  
 
-To solve this problem we can use `call` when invoking the function to properlly bind the `this`  ref to the correct object or function 
+To solve this problem we can use `call` when invoking the function to properly bind the `this`  ref to the correct object or function 
 ```js
 for (i=0; i<10; i++) {
 	if (i > 5) {
@@ -72,7 +72,7 @@ for (i=0; i<10; i++) {
 	}
 }
 ```
-First arg in `call` is the object we want to reffer to. The other args are the parameters to pass to the function.
+The first argument in `call` is the object we want to refer to. The additional arguments are the parameters we want to pass to the function.
 
 ### [what `this` is not](https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch1.md#its-scope) ?
 
