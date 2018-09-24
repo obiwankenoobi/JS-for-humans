@@ -1,7 +1,7 @@
 # *`this`* 
-This is a special keyword that each function get to identify the scope it's belong to. 
+This is a special keyword that each function gets to identify the scope it belongs to. 
 
-*NOTE* in JS we have a method called `call` which allows you to bind context and reuse code on different objects:
+*NOTE* in JS we have a method `call` which allows you to bind context and reuse code on different objects:
 ```js
 
 // <contex> is the obj name the prop belong to
@@ -21,7 +21,7 @@ identify.call(me)  // Arty
 identify.call(you) // Yosef
 ```
 
-Instead of that , we can simply pass the object as a prop and not to use `call` at all and then we dont need any context to an object - we have the actual object.
+Instead of using `call`, we can simply pass the object as a prop and no longer require any context to an object because we have the object itself.
 
 ```js
 function identify(context) {
@@ -37,7 +37,7 @@ identify( you ); // YOSEF
 speak( me ); // Hello, I'm ARTY
 ```
 
-So why we need call?
+So why do we need call?
 ```js
 function foo(num) {
 	console.log( "foo: " + num );
@@ -62,9 +62,9 @@ for (i=0; i<10; i++) {
 // how many times was `foo` called?
 console.log( foo.count ); // 0 -- WTF?
 ```
-in the example above you can see us trying to count the number of times the function has being called. the problem is - when we call `this.count++` we DONT actually reffer to `foo` when we use `this` but instead we creating new global variable out of `foo`.  
+In the example above you can see we are trying to count the number of times the function has being called. The problem is when we call `this.count++`, we DON'T actually refer to our function `foo` when we use `this`, but instead we are creating a new global variable `foo`.  
 
-To solve this problem we can use `call` when invoking the function to properlly bind the `this`  ref to the correct object or function 
+To solve this problem we can use `call` when invoking the function to properly bind the `this`  ref to the correct object or function 
 ```js
 for (i=0; i<10; i++) {
 	if (i > 5) {
@@ -72,7 +72,7 @@ for (i=0; i<10; i++) {
 	}
 }
 ```
-First arg in `call` is the object we want to reffer to. The other args are the parameters to pass to the function.
+The first argument in `call` is the object we want to refer to. The additional arguments are the parameters we want to pass to the function.
 
 ### [what `this` is not](https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/ch1.md#its-scope) ?
 
@@ -87,7 +87,7 @@ When a function is invoked, an activation record, otherwise known as an executio
 In the next chapter, we will learn to find a function's call-site to determine how its execution will bind this.
 
 #### simple words: 
-`this` reffer to the place where the function is getting called and not where it has being declared! (as the scope suggest)
+`this` refers to the place where the function is being called and not where it has been declared! (as the scope suggests)
 
 
 #### Default Binding
@@ -100,7 +100,7 @@ var a = 2;
 
 foo(); // 2
 ```
-Above we declared `a` in the globl scope, and called `foo` in the global scope - therefore the global scope is the `this` inside `foo` and will print `2`.
+Above, we declared `a` in the global scope, and called `foo` in the global scope - therefore the global scope is the `this` inside `foo` and will print `2`.
 
 
 #### Implicit Binding
@@ -119,7 +119,7 @@ obj.foo(); // 2
 Whatever you choose to call this pattern, at the point that `foo()` is called, it's preceded by an object reference to `obj`. When there is a context object for a function reference, the implicit binding rule says that it's that object which should be used for the function call's this binding.
 </br>
 #### Implicitly Lost
-One of the most common frustrations that this binding creates is when an implicitly bound function loses that binding, which usually means it falls back to the default binding, of either the `global` object or `undefined`, depending on strict mode.
+One of the most common frustrations that this binding creates is when an implicitly bound function loses that binding, which usually means it falls back to the default binding of either the `global` object or `undefined`, depending on strict mode.
 
 ```js
 function foo() {
@@ -141,12 +141,12 @@ var a = "oops, global"; // `a` also property on global object
 
 doFoo( obj.foo ); // "oops, global"
 ```
-Parameter passing is just an implicit assignment, and since we're passing a function, it's an implicit reference assignment, so the end result is the same as the previous snippet.
+Parameter passing is just an implicit assignment and since we're passing a function, it's an implicit reference assignment so the end result is the same as the previous snippet.
 
 What if the function you're passing your callback to is not your own, but built-in to the language? No difference, same outcome.
 
 #### Explicit Binding
-To use explicit binding we can use two methods provided to us by JS `call` and `apply` they are both takes as first arg the object/context you want to use as `this` and by doing so you can maka a proper function call with the binded `this` of your choice.
+To use explicit binding we can use two methods provided to us by javascript: `call` and `apply`. They both take as their first argument the object/context you want to use as `this`. By using either of these methods, you can make a proper function call with the bound `this` of your choice.
 ```js
 function foo() {
 	console.log( this.a );
@@ -161,9 +161,9 @@ foo.call( obj ); // 2
 
 
 #### Hard Binding
-As alternative - you can bind the context for a particular function **BEFORE** you call it by using `bind`. 
+As alternative, you can bind the context for a particular function **BEFORE** you call it by using `bind`. 
 
-`bind` is another method you have in all functions in JS and it works similar to `apply` and `call` but also fix all bind lost issues by **hard binding** `this` before invoking the functions call 
+`bind` is another provided by javascript and works similar to `apply` and `call` but will also fix all bind lost issues by **hard binding** `this` before invoking the function call. 
 
 ```js
 function foo() {
@@ -178,7 +178,7 @@ let fooBindedToObj = foo.bind(obj)
 
 fooBindedToObj(); // 2
 ```
-As you can see in the example above - we declare new variable `fooBindedToObj` ans set it with the value of `foo.bind(obj)` which mean , `foo` with the context of `obj` as `this`
+As you can see in the example above, we declare new variable `fooBindedToObj` and set it with the value of `foo.bind(obj)` which means, `foo` with the context of `obj` as `this`
 
 > `bind(..)` returns a new function that is hard-coded to call the original function with the `this` context set as you specified.
 
@@ -196,11 +196,11 @@ var obj = {
 // use `obj` as `this` for `foo(..)` calls
 [1, 2, 3].forEach( foo, obj ); // 1 awesome  2 awesome  3 awesome
 ```
-as the example aboce suggest , we pass second param to `foreach` with the context we want to bind the function to. We use it instead of using `bind`.
+as the example above suggests, we pass a second parameter to `foreach` with the context we want to bind the function to. We use it instead of using `bind`.
 <br/>
 
 #### `new` Binding
-when creating new function constructors with the special keyword `new` you get the properties inside it auto binded to the new constructor that has been created. 
+When creating new function constructors with the special keyword `new` you get the properties inside auto bound to the new constructor. 
 ```js
 function foo(a) {
 	this.a = a;
@@ -210,7 +210,7 @@ var bar = new foo( 2 );
 console.log( bar.a ); // 2
 ```
 ### Everything In Order
-so now when we know about the 4 method we can bind `this` , which one is the strongest? 
+So now we know about the four methods we can bind `this`, which is the strongest? 
 ```js
 function foo() {
 	console.log( this.a );
@@ -232,11 +232,11 @@ obj2.foo(); // 3
 obj1.foo.call( obj2 ); // 3
 obj2.foo.call( obj1 ); // 2
 ```
-In the example above we can see that the explicit binding method using `call` is stronger then the implicit binding using the object name infront of the method. 
+In the example above we can see that the explicit binding method using `call` is stronger then the implicit binding using the object name in front of the method. 
 <br/>
 
 ### Determining `this`
-Now, we can summarize the rules for determining `this` from a function call's call-site, in their order of precedence. Ask these questions in this order, and stop when the first rule applies.
+Now, we can summarize the rules for determining `this` from a function call's call-site in their order of precedence. Ask these questions in this order and stop when the first rule applies.
 
 Is the function called with `new` (**new binding**)? If so, `this` is the newly constructed object.
 
@@ -254,11 +254,11 @@ Otherwise, default the `this` (**default binding**). If in strict mode, pick `un
 
 `var bar = foo()`
 
-That's it. That's all it takes to understand the rules of this binding for normal function calls. 
+That's it. That's all it takes to understand the rules of `this` binding for normal function calls. 
 
 ### Lexical `this`
 
-As we learned in the previews book - in ES6 we have this new arrow function `() =>` which use `this` with totally diff aproach. What it does is **adopting** the `this` from the outter scope on its run time automatically and doesnt have it's own `this` as we know from regular functions. Which means - without any need of binding the function - the arrow function will check for the scope at it's run time - and use the `this` from it. 
+In ES6 we have the new arrow function notation, `() =>`, which uses `this` with a totally different approach. What it does is **adopting** the `this` from the outer scope on its run time automatically and doesn't have it's own `this` as we know from regular functions. Which means without any need of binding the function the arrow function will check for the scope at it's run time and use the `this` from it. 
 
 ```js
 function foo() {
@@ -276,7 +276,7 @@ var obj = {
 foo.call( obj ); // 2
 ```
 
-Before ES6 we had another way to achive this pattern:
+Before ES6 we had another way to achieve this pattern:
 ```js
 function foo() {
 	var self = this;
@@ -295,21 +295,21 @@ var obj = {
 foo.call( obj ); // 2
 ``` 
 
-What we do is to assign `this` (whatever it will be) inside `foo` to a variable so later use it inside `setTimeout` so we wont lose its context by passing it as param. If we simply used `this` inside `setTimeout` we were getting NOT the `this` we want but the `this` of `setTimeout`.
+What we do is assign `this` (whatever it will be) inside `foo` to a variable to later use inside `setTimeout` so we won't lose its context by passing it as parameter. If we simply used `this` inside `setTimeout` we would get NOT the `this` we want but the `this` of `setTimeout`.
 
-Later we bind `this` using `call` to the object `obj` so when we use `self` inside `foo` the contex will be of `obj` and `a` will be `2`
+Next we bind `this` using `call` to the object `obj` so when we use `self` inside `foo` the context will be of `obj` and `a` will be `2`
 
-Leter when invoking the function we simply do what we learned we need to do - bind the function with the context we need in this case `obj` what gives us the `this` context of `obj` inside a variable `self` which we later need to use inside `setTimeout`
+Later when invoking the function we simply do what we learned we need to do - bind the function with the context we need. In this case `obj` gives us the `this` context of `obj` inside a variable `self` which we later need to use inside `setTimeout`
 
 <br/>
 
 ## notes
 
-When you declare a `function` inside a `function` it has the `this` context of it's execution context (the `this` from the time you called the function (usually the `global` objet))! Even though you might think it should have the context of the function that it has being declared on. 
+When you declare a `function` inside a `function` it has the `this` context of it's execution context (the `this` from the time you called the function – usually the `global` object), even though you might think it should have the context of the function that it has being declared on. 
 
-that's because **only** methods inhert the lexical context of `this` and even though the function has being declared inside another function , it's still a function and **not** a method - therefor it inhert the execution context as any function. (usually the `global` objet)
+That's because **only** methods inherit the lexical context of `this` and even though the function has being declared inside another function, it's still a function and **not** a method - therefore it inherits the execution context as any function (usually the `global` object).
 
-important to note - even that fucntions that has being declared inside another function have the `this` context of the execution context , it doesn't mean it can be called from the out of its scope - thats because of the Lexical scope and the fact it's not has being declared there.
+Important to note - even though functions that have been declared inside another function have the `this` context of the execution context, it does not mean it can be called from out of its scope - this is because of the Lexical scope and the fact it's not being declared there.
 
 
 #### example 
