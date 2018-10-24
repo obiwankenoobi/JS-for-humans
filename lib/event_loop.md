@@ -22,23 +22,23 @@ foo()
 
 Your stack will loop like this:
 ```js
-faa()
-fee()
-foo()
+2:faa()
+1:fee()
+0:foo()
 ```
 All the stack can do is to put calls on top of it, and pull calls from the top of it when they returned. So on every return of a call your stack will pull the top call of it and move on to the next one. And it will loop something like that:
 ```js
-faa() // <== returned
-fee()
-foo()
+2:faa() // <== returned
+1:fee()
+0:foo()
 ```
 
 ```js
-fee() // <== returned
-foo()
+1:fee() // <== returned
+0:foo()
 ```
 ```js
-foo() //<== returned
+0:foo() //<== return
 ```
 ```js
 // open stack
@@ -73,16 +73,19 @@ The program will have to wait until `blockTheStack` will finish loop 1000000000 
 Lets see the stack:
 
 ```js
-start() // <== "im started"
-run()
+1:start() // <== "im started"
+0:run()
 ```
 ```js
-blockTheStack() // <== *waiting for 1000000000 loops* it can take a while hole on...
-run()
+1:blockTheStack() // <== *waiting for 1000000000 loops* it can take a while hole on...
+0:run()
 ```
 ```js
-done() // <== "im done"
-run()
+1:done() // <== "im done"
+0:run()
+```
+```js
+0:run // <== return
 ```
 ```js
 // open stack
@@ -133,27 +136,30 @@ function run() {
 run()
 ```
 
-Pretty similar to the old piece of code - only now we use asynchronous concept and  `setImmediate` to leave the stack clean. So let's see how the stack will look like:
+Pretty similar to the old piece of code - only now we use asynchronous concept and  `setImmediate` to leave the stack clean. So let's see how the stack will loop like:
 
 ```js
-start() // <== "im started"
-run()
+1:start() // <== "im started"
+0:run()
 ```
 ```js
-notBlockingTheStack() // <== calling setImmediate(blockTheStack)
-run()
+1:notBlockingTheStack() // <== calling setImmediate(blockTheStack)
+0:run()
 ```
 ```js
-setImmediate(blockTheStack) // <== moving `blockTheStack` to run in the side
-run()
+1:setImmediate(blockTheStack) // <== moving `blockTheStack` to run in the side
+0:run()
 ```
 ```js
-done() // <== "im done"
-run()
+1:done() // <== "im done"
+0:run()
 ```
 ```js
-blockTheStack() // <== "didnt blocked anything(:"
-run()
+1:blockTheStack() // <== "didnt blocked anything(:"
+0:run()
+```
+```js
+0:run() // <== return
 ```
 ```js
 // open stack
