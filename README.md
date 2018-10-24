@@ -14,3 +14,4 @@ Much of the information is summary of the AMAZING books by [Kyle Simpson](https:
 * [`this`](lib/this.md) 
 * [scope & closures](lib/scopeNclosures.md)
 * [promises](lib/promises.md)
+* *[Event loop](lib/event_loop.md)
