@@ -20,7 +20,7 @@ function faa() {
 foo()
 ```
 
-Your stack will loop like this:
+Your stack will look like this:
 ```js
 2:faa()
 1:fee()
