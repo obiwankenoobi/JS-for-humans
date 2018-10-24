@@ -4,7 +4,7 @@ The event loop is the magic behind Javascript. There is a lot of very technical 
 
 I will try to explain it in human language. 
 
-You can think about the event loop as an engine run nonstop on your program environment, to understand it proposes you should be familiar with the Stack. A stack is a data structure, to be precise, it is a particular type of queue that follows a LIFO or last in first out order.. Javascript is a single threaded language, therefore can only run one task at once. It means when you have a code looking like this:
+You can think about the event loop as an engine run nonstop on your program environment, to understand it proposes you should be familiar with the Stack. A stack is a data structure, it is similar to a queue except it follows a LIFO or last in first out order.. Javascript is a single threaded language, therefore can only run one task at once. It means when you have a code looking like this:
 
 ```js
 function foo() {
