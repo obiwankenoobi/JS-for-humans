@@ -99,7 +99,7 @@ function notBlockingTheStack() {
 }
 ```
 
-I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - we have useful tools which we get for free and make our life so much easier. They usually called WebAPI, one of these tools is `setImmediate`. What it does is to take a function as an argument and run it OUT OF THE MAIN STACK. 
+I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - we have useful tools which we get for free and make our life so much easier. They usually called WebAPI, one of these tools is `setImmediate`. What it does is to take callback function as an argument and run it OUT OF THE MAIN STACK. 
 
 Now when we get to this part in our program - what the stack is going to do is to say: 
 
@@ -109,9 +109,14 @@ Here is where the magic happens - `setImmediate` is going to move the function t
 
 As we mentioned earlier, the Event loop runs constantly when we have something going on in our program. All it does is to wait for tasks to be finished running on the WebAPI and push them to the Task-Queue so they can get back to the stack, run and return. 
 
-The Task-Queue is basically a line of tasks we receiving back from the WebAPI, that wait for the stack to be open so they can go back on top of it, finish their job and be returned. 
+The Task-Queue is basically a line of tasks we receiving back from the WebAPI, that wait for the stack to be open so they can go back on top of it, run and return. 
 
-When `blockTheStack` will finish running, the event loop will push it to the task queue to return it when it's done and the stack is empty and ready to receive new functions on it! 
+Now `setImmediate` pulled out of the stack to the wepAPI area, in real life you will probably have there instead of `setImmediate` some other API like `http` request or `readFile`. When the API will finish its job and be ready to invoke its callback, it will push the callback to the Task-Queue - in our example it will be `blockTheStack`. 
+
+In the Task-Queue out callback will sit and wait until the stack will be open - and when it does , it will be pushed on top of it and be ready to run and return.
+
+
+
 
 We talked a lot, lets write some code:
 
@@ -124,10 +129,8 @@ function start() {
 }
 function blockTheStack() {
     let i = 0;
-      console.log("didnt blocked anything(:")
     while(i < 100) {
         i++
-            console.log("didnt blocked anything(:")
     }
     console.log("didnt blocked anything(:")
 }
