@@ -99,13 +99,19 @@ function notBlockingTheStack() {
 }
 ```
 
-I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - in the client environment, for example, we have useful tools which make our life so much easier. They usually called WebAPI, one of these tools is `setImmediate`, I'm sure you all know it. What it does is to take a function as an argument and run it OUT OF THE STACK. Now when we run `notBlockingTheStack` what the stack is going to do is to say "ok `notBlockingTheStack` is called, nice. Oh, and `setImmediate` inside it get called too, sweet." Here is where the magic happens - `setImmediate` is going to move the function that has been passed to it (in our example `blockTheStack`) to the side - and run it outside the stack so the stack stays open and ready to run other tasks! 
+I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - we have useful tools which we get for free and make our life so much easier. They usually called WebAPI, one of these tools is `setImmediate`. What it does is to take a function as an argument and run it OUT OF THE MAIN STACK. 
 
-As we mentioned earlier, the Event loop runs constantly in your program and all it does is to wait for tasks to be finished running on the WebAPI and push them to the Task-Queue so they can get back to the stack. 
+Now when we get to this part in our program - what the stack is going to do is to say: 
 
-The Task-Queue is basically a line of tasks we receiving back from the WebAPI, that wait for the stack to be open so they can go back to it, finish their job and be returned. 
+"ok `notBlockingTheStack` is called, nice put it on top. Oh, and `setImmediate` inside it get called too, put it on top of it as well. Now I will run `setImmediate` and pull it out. Then I will return because `notBlockingTheStack` doesnt have anythig else to do" 
 
-When the `blockTheStack` will finish running, the event loop will push it to the task queue to return it when it's done and the stack is empty and ready to receive new functions on it! 
+Here is where the magic happens - `setImmediate` is going to move the function that has been passed to it (in our example `blockTheStack`) to the side - and run it outside the stack so the stack stays open and ready to run other tasks! 
+
+As we mentioned earlier, the Event loop runs constantly when we have something going on in our program. All it does is to wait for tasks to be finished running on the WebAPI and push them to the Task-Queue so they can get back to the stack, run and return. 
+
+The Task-Queue is basically a line of tasks we receiving back from the WebAPI, that wait for the stack to be open so they can go back on top of it, finish their job and be returned. 
+
+When `blockTheStack` will finish running, the event loop will push it to the task queue to return it when it's done and the stack is empty and ready to receive new functions on it! 
 
 We talked a lot, lets write some code:
 
@@ -118,8 +124,10 @@ function start() {
 }
 function blockTheStack() {
     let i = 0;
-    while(i < 1000000000) {
+      console.log("didnt blocked anything(:")
+    while(i < 100) {
         i++
+            console.log("didnt blocked anything(:")
     }
     console.log("didnt blocked anything(:")
 }
@@ -136,26 +144,27 @@ function run() {
 run()
 ```
 
-Pretty similar to the old piece of code - only now we use asynchronous concept and  `setImmediate` to leave the stack clean. So let's see how the stack will loop like:
+Pretty similar to the old piece of code - only now we use asynchronous concept and  `setImmediate` to leave the stack clean. So let's see how the stack will look like:
 
 ```js
-1:start() // <== "im started"
+1:start() // <== "im started" return
 0:run()
 ```
 ```js
-1:notBlockingTheStack() // <== calling setImmediate(blockTheStack)
+2:setImmediate(blockTheStack) // <== calling setImmediate(blockTheStack) return
+1:notBlockingTheStack() 
 0:run()
 ```
 ```js
-1:setImmediate(blockTheStack) // <== moving `blockTheStack` to run in the side
+1:notBlockingTheStack()  // return
 0:run()
 ```
 ```js
-1:done() // <== "im done"
+1:done() // <== "im done" return
 0:run()
 ```
 ```js
-1:blockTheStack() // <== "didnt blocked anything(:"
+1:blockTheStack() // <== "didnt blocked anything(:" return
 0:run()
 ```
 ```js
