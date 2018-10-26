@@ -1,5 +1,5 @@
 # Async by design
-Have you ever asked yourself what is the difference between Node.js and other programming languages? Well for starters - Node is not a programming language is runtime environment for Javascript.
+Have you ever asked yourself what is the difference between Node.js and other programming languages? Well for starters - Node is not a programming language. It's runtime environment for Javascript applications.
 
 > Runtime describes software/instructions that are executed while your program is running, especially those instructions that you did not write explicitly, but are necessary for the proper execution of your code. 
 

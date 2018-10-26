@@ -6,7 +6,7 @@ I will try to explain it in human language.
 
 The event loop is a tool inside [libuv](http://docs.libuv.org/en/v1.x/) which we get inside any Javascript program for free, and it's live in our enviroment. To understand it's proposes you should be familiar with the Call Stack. 
 
-The Call Stack is a part of the engine which run our Javascript code. In Chrome it will be the V8 engine, in other browsers it will be something else. The Call Stackt is a data structure, it is similar to a queue except it follows a LIFO or last in first out order. It's all job is to invoke the top task it have. Javascript is a single threaded language, therefore - We have only one stack! So we can only run one task every time. It means when you have a code looking like this:
+The Call Stack is a part of the engine which run our Javascript code. In Chrome it will be the V8 engine, in other browsers it will be something else. The Call Stack is a data structure, it is similar to a queue except it follows a LIFO or last in first out order. It's all job is to invoke the top task it have. Javascript is a single threaded language, therefore - We have only one stack! So we can only run one task every time. It means when you have a code looking like this:
 
 ```js
 function foo() {
