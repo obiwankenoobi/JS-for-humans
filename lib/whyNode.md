@@ -21,9 +21,9 @@ consider the next piece of code written in Python:
 
 ```py
 import time
-while(true):
-    time.sleep(5)
-    print("hello")
+    while(true):
+        time.sleep(5)
+        print("hello")
 ```
 
 So this code will halt the thread for 5 seconds and print "hello" on every loop.
@@ -31,9 +31,20 @@ But what if now your boss comes to you and says "Ohh you know what? now I need y
 
 You have two options to do it.
 
-First is to reuse the current thread you using for the first task and find some algorithm which crosses both 5 and 2 and print it in parallel.  
+First is to reuse the current thread you using for the first task and find some algorithm which crosses both 5 and 2 and print it in parallel. I would make an example but I don't really know the algorithm for that so...  
 
-The second is to use another thread and write another `while` loop. Which force us to use more resources. 
+The second is to use another thread and write another `while` loop. Which force us to use more resources That i can demonstrate. 
+
+```py
+import time
+    while(true):
+        time.sleep(5)
+        print("hello")
+
+    while(true):
+        time.sleep(2)
+        print("world")     
+```
 
 How Node will deal with the same task? 
 Well in Node as you know, we have only one thread. So we obviously can't allocate another one to do something else. But We don't have to. Node isn't designed that way! Let's write an example:
