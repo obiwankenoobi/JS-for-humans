@@ -8,9 +8,7 @@ Good title, but lets start first with:
 
 Thanks for reading! 
 
-No, but for real, Node is basically set of tools and libraries living by the grace of V8 engine (or other Javascript engines) and use its power to do cool things focused on networking using Javascript! You can do a lot more with it, but it's born and designed to make networking better! 
-
-Node is an abstract of multiple tools and libraries such as, Javscript engine (Google VM V8 in most cases), [libuv](https://github.com/libuv/libuv) module (which is actually the part which provides us with the [Event loop](./event_loop)) and other c++ binding code glues together to create the Node application. 
+No, but for real, Node is an abstract of multiple tools and libraries such as, Javscript engine (Google VM V8 in most cases), [libuv](https://github.com/libuv/libuv) module (which is actually the part which provides us with the [Event loop](./event_loop)) and other c++ binding code glues together to create the Node application. 
 
 We won't touch these areas here but I just wanted to put it out there. the main use of Node is to create network based apps. You can do so much more with it but as Ryan Dahl says , it's designed for it and do it better then anyone. 
 
