@@ -10,8 +10,10 @@ If you notice any mistakes or inaccurate explanations - please make a PR so ever
 Much of the information is summary of the AMAZING books by [Kyle Simpson](https://github.com/getify) So for more information please visit his GH page. 
 
 ## content
-
-* [`this`](lib/this.md) 
-* [scope & closures](lib/scopeNclosures.md)
-* [promises](lib/promises.md)
-* [Event loop](lib/event_loop.md)
+* Javascript
+    * [`this`](lib/this.md) 
+    * [Scope & Closures](lib/scopeNclosures.md)
+    * [Promises](lib/promises.md)
+    * [Event loop](lib/event_loop.md)
+* Node
+    * [Async by design](lib/asyncByDesign.md)

@@ -1,10 +1,12 @@
 # The event loop
 
-The event loop is the magic behind Javascript. There is a lot of very technical ways to describe the event loop and I am sure google would be happy to give you the super technical explanation. 
+The event loop is one of the magics behind Javascript. There is a lot of very technical ways to describe the event loop and I am sure google would be happy to give you the super technical explanation. 
 
 I will try to explain it in human language. 
 
-You can think about the event loop as an engine run nonstop on your program environment, to understand it proposes you should be familiar with the Stack. A stack is a data structure, it is similar to a queue except it follows a LIFO or last in first out order.. Javascript is a single threaded language, therefore can only run one task at once. It means when you have a code looking like this:
+The event loop is a tool inside [libuv](http://docs.libuv.org/en/v1.x/) which we get inside any Javascript program for free, and it's live in our enviroment. To understand it's proposes you should be familiar with the Call Stack. 
+
+The Call Stack is a part of the engine which run our Javascript code. In Chrome it will be the V8 engine, in other browsers it will be something else. The Call Stackt is a data structure, it is similar to a queue except it follows a LIFO or last in first out order. It's all job is to invoke the top task it have. Javascript is a single threaded language, therefore - We have only one stack! So we can only run one task every time. It means when you have a code looking like this:
 
 ```js
 function foo() {
@@ -26,7 +28,7 @@ Your stack will look like this:
 1:fee()
 0:foo()
 ```
-All the stack can do is to put calls on top of it, and pull calls from the top of it when they returned. So on every return of a call your stack will pull the top call of it and move on to the next one. And it will loop something like that:
+All the stack is doing is to invoke the top function, return and pull it out. So on every return of a call your stack will pull the top call of it and move on to the next one. And it will look something like that:
 ```js
 2:faa() // <== returned
 1:fee()
@@ -46,7 +48,7 @@ All the stack can do is to put calls on top of it, and pull calls from the top o
 
 So I hope you now have a rough idea about the Stack and it proposes. 
 
-Because Javascript is single threaded, We only have one stack and we can only do one thing every time. So.. what if we have a function that takes a lot of time to be done? Well, we call it, blocking the stack, it means we executing a function that won't let the rest of our program to run until this function will finish running. Consider the next piece of code:
+Because Javascript is single threaded, We only have one stack and we can only do one thing every time (I know I repeat myself but it is so important to understand). So.. what if we have a function that takes a lot of time to be done? Well, we call it, blocking the stack. It means we executing a function that won't let the rest of our program to run until this function will finish running. Consider the next piece of code:
 
 ```js
 function done() {
@@ -99,7 +101,7 @@ function notBlockingTheStack() {
 }
 ```
 
-I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - we have useful tools which we get for free and make our life so much easier. They usually called WebAPI, one of these tools is `setImmediate`. What it does is to take callback function as an argument and run it OUT OF THE MAIN STACK. 
+I am sure you all heard about asynchronous functions. But WHAT DOES IT ACTUALLY MEAN? that's a great question. In Javascript - we have useful tools which we get for free and make our life so much easier. In the browser they usually called WebAPI, and in the server, Node API. Both enviroments have different API and capabilities. Lets talk about the Node API. One of these tools in the Node API is `setImmediate`. What it does is to take callback function as an argument and run it OUT OF THE MAIN STACK. 
 
 Now when we get to this part in our program - what the stack is going to do is to say: 
 
