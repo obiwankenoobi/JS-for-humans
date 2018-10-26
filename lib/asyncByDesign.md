@@ -3,8 +3,6 @@ Have you ever asked yourself what is the difference between Node.js and other pr
 
 > Runtime describes software/instructions that are executed while your program is running, especially those instructions that you did not write explicitly, but are necessary for the proper execution of your code. 
 
-Node is an abstract of multiple tools and libraries such as the Javascript engine (V8 in most cases) libuv module (which is actually the part which provides us with the [Event loop](./event_loop)) and other c++ binding code glues together to create the Node application. We won't touch these areas here but I just wanted to put it out there. 
-
 So what is so special about Node? well, there is bunch of things! We will talk about one of them here. Node is single threaded and built with asynchronous approach in mind! What it means is - Just like we know Javascript, Node can only do one thing at a time, this is great because of it' an asynchronous nature which is highly scalable architecture design! 
 
 You don't need a bunch of threads to deal with tasks! the Node API together with the Event loop deal with it for us! 

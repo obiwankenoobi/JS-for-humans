@@ -16,4 +16,7 @@ Much of the information is summary of the AMAZING books by [Kyle Simpson](https:
     * [Promises](lib/promises.md)
     * [Event loop](lib/event_loop.md)
 * Node
+    * [Why Node?](lib/whyNode.md) 
     * [Async by design](lib/asyncByDesign.md)
+    * Events
+    * Streams
