@@ -18,5 +18,6 @@ Much of the information is summary of the AMAZING books by [Kyle Simpson](https:
 * Node
     * [Why Node?](lib/whyNode.md) 
     * [Async by design](lib/asyncByDesign.md)
-    * Events
-    * Streams
+    * [Events](lib/Events.md)
+    * [Streams](lib/Streams)
+    * NPM or Yarn
