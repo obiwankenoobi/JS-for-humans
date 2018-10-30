@@ -6,8 +6,6 @@ For now, this repo contains only a few sections but I'm planning to add new ones
 
 If you notice any mistakes or inaccurate explanations - please make a PR so everyone can enjoy accurate information! :smile: 
 
-## sources 
-Much of the information is summary of the AMAZING books by [Kyle Simpson](https://github.com/getify) So for more information please visit his GH page. 
 
 ## content
 * Javascript
@@ -21,3 +19,10 @@ Much of the information is summary of the AMAZING books by [Kyle Simpson](https:
     * [Events](lib/Events.md)
     * [Streams](lib/Streams)
     * NPM or Yarn
+
+
+## sources 
+* [Kyle Simpson - You Don't Know JS](https://github.com/getify) 
+* [Bryan Hughes - The Node.js Event Loop: Not So Single Threaded](https://www.youtube.com/watch?v=zphcsoSJMvM)
+* [Samer Buna - You Don't Know Node](https://www.youtube.com/watch?v=oPo4EQmkjvY&t=1717s&list=PLKBvwJ74x1Rpp7FOOJI9QNPuHq_ST-94r&index=74)
+* [Philip Roberts: What the heck is the event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=845s)
