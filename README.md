@@ -22,7 +22,7 @@ If you notice any mistakes or inaccurate explanations - please make a PR so ever
     * NPM or Yarn
 
 
-## sources 
+## more resources 
 * [Kyle Simpson - You Don't Know JS](https://github.com/getify) 
 * [Bryan Hughes - The Node.js Event Loop: Not So Single Threaded](https://www.youtube.com/watch?v=zphcsoSJMvM)
 * [Samer Buna - You Don't Know Node](https://www.youtube.com/watch?v=oPo4EQmkjvY&t=1717s&list=PLKBvwJ74x1Rpp7FOOJI9QNPuHq_ST-94r&index=74)
