@@ -18,6 +18,7 @@ If you notice any mistakes or inaccurate explanations - please make a PR so ever
     * [Async by design](lib/asyncByDesign.md)
     * [Events](lib/Events.md)
     * [Streams](lib/Streams)
+    * [performance](lib/performance.md)
     * NPM or Yarn
 
 
