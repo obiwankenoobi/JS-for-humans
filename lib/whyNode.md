@@ -51,11 +51,12 @@ In our example, you can see we didn't actually touched the first statement and n
 
 To understand how does it work and what actually happans you can check the [Event loop](./event_loop) chapter. 
 
-In my opinion, this is the main benefit of using Node for network related apps. It's use Javascript as it's API, and it's asynchronous which is a great design for I/O based apps. I'm sure I could think about other benefits but - I think it's enough to consider it as your next tool to build your network based app.
+## Why Node
+In my opinion, the main benefit of using Node for network related apps is first you are using JS to communicate withthe API, and it's asynchronous design is crucial for network based applications. Node will win Java or Python anytime when it comes to networking. It's simply handle concurrent tasks much better then others. It will not start a new thread for each connection and it will not start a new thread for each task when you want things to happan concurrently. 
 
 ## why not Node?
-Well, if you need very machin or time complexity efficiency for example, you might want strict language as these behave much better with compilers and their time complexity is much easier to predict. 
+Well, if you need time complexity efficiency for example, you might want strict language as these behave much better with compilers and their time complexity is much easier to predict. 
 
-If you want much more control about the processes and threads, you might go with multi threaded option. It will be good for crazy math and statistics works on multi core huge machines it will be really useful. As in Node even though its c++ cinding is multi threaded - there is limitations to it and it can't achive the same results as mult threaded one. 
+Also if you need to run application which is super CPU intensive - Node isn't the answer fot you as well. 
 
-But for networking I/O applications imp Node is the best option without doubt! 
+But for networking I/O applications imo Node is the best option without doubt! 

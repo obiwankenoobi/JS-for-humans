@@ -19,6 +19,7 @@ If you notice any mistakes or inaccurate explanations - please make a PR so ever
     * [Events](lib/Events.md)
     * [Streams](lib/Streams)
     * [performance](lib/performance.md)
+    * [scaling](lib/scaling.md)
     * NPM or Yarn
 
 
