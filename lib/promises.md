@@ -143,7 +143,7 @@ Now the `new Promise` block will be called and it wont move to the next block wh
 
 
 
-#### `async` / `await` error hendling
+#### `async` / `await` error handling
 
 to handle errors in `async` / `await` block - we simply wrap the block with 
 ```js
